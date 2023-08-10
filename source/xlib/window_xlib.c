@@ -211,15 +211,15 @@ jwin_result jwin_window_destroy(jwin_window* win)
     jwin_context* ctx = win->ctx;
     void
     (* dtor)(const jwin_event_destroy*, void*) = win->event_handlers[JWIN_EVENT_TYPE_DESTROY].callback.destroy;
+    const jwin_event_destroy event =
+            {
+            .type = JWIN_EVENT_TYPE_DESTROY,
+            .window = win,
+            .context = ctx,
+            };
+    CALL_EVENT_HOOKS(win, (jwin_event_any){ .destroy = event });
     if (dtor)
     {
-        const jwin_event_destroy event =
-                {
-                .type = JWIN_EVENT_TYPE_DESTROY,
-                .window = win,
-                .context = ctx,
-                };
-        CALL_EVENT_HOOKS(win, (jwin_event_any){ .destroy = event });
         dtor(&event, win->event_handlers[JWIN_EVENT_TYPE_DESTROY].param);
     }
     const jwin_allocator_callbacks* allocator_callbacks = &ctx->allocator_callbacks;

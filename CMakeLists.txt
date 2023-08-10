@@ -43,3 +43,7 @@ add_executable(vk_test test/vk_test.c
         test/test_common.h)
 target_link_libraries(vk_test PRIVATE jwin vulkan)
 add_test(NAME vulkan_test COMMAND vk_test)
+
+add_executable(multi_window_test test/multiwin.c)
+target_link_libraries(multi_window_test PRIVATE jwin)
+add_test(NAME multi_window_test COMMAND multi_window_test)

@@ -1,5 +1,5 @@
 //
-// Created by jan on 8.8.2023.
+// Created by jan on 10.8.2023.
 //
 #include <stdio.h>
 #include "../source/jwin.h"
@@ -23,12 +23,10 @@ static void context_event_hook(const jwin_event_any* e, void* param)
     ASSERT(len <= sizeof(buffer));
     printf("Event str length: %zu\n%s\n\n", len, buffer);
 
-//    if (e->type == JWIN_EVENT_TYPE_KEY_PRESS && !e->key_press.repeated)
-//    {
-//        printf("Pressed %s\n", jwin_keycode_to_str(e->key_press.keycode));
-//    }
     (void)param;
 }
+
+#define WINDOW_COUNT (16)
 
 int main()
 {
@@ -47,7 +45,7 @@ int main()
     JWIN_TEST_CALL(jwin_context_create(&ctx_info, &ctx));
     ASSERT(res == JWIN_RESULT_SUCCESS);
 
-    jwin_window* wnd;
+    jwin_window* wnd_array[WINDOW_COUNT];
     jwin_window_create_info win_info =
             {
                     .title = "Cool window",
@@ -57,12 +55,19 @@ int main()
                     .fixed_size = 0,
                     .double_click_time_ms = 1000,
             };
-    JWIN_TEST_CALL(jwin_window_create(ctx, &win_info, &wnd));
-    ASSERT(res == JWIN_RESULT_SUCCESS);
+    for (unsigned i = 0; i < WINDOW_COUNT; ++i)
+    {
+        JWIN_TEST_CALL(jwin_window_create(ctx, &win_info, wnd_array + i));
+        ASSERT(res == JWIN_RESULT_SUCCESS);
+    }
 ;
     jwin_context_set_event_hook(ctx, context_event_hook, NULL);
 
-    const time_t t_begin = time(NULL);
+    time_t t_begin = time(NULL);
+    const time_t t_zero = t_begin;
+
+    unsigned window_close_array[5] = {2, 5, 6, 1, 9};
+    unsigned i = 0;
 
     while ((res = jwin_context_wait_for_events(ctx)) == JWIN_RESULT_SUCCESS)
     {
@@ -74,10 +79,16 @@ int main()
         }
         const time_t t_now = time(NULL);
 
-        if (t_now - t_begin >= (5))
+        if ((t_now - t_zero) >= 4)
         {
-            printf("Asking window to close (politely)\n");
-            jwin_window_ask_to_close(wnd);
+            printf("Asking context to close (politely)\n");
+            jwin_context_mark_to_close(ctx);
+        }
+        if (t_now - t_begin >= 1)
+        {
+            t_begin = t_now;
+            printf("Asking window %u to close (politely)\n", window_close_array[i]);
+            jwin_window_ask_to_close(wnd_array[window_close_array[i++]]);
         }
     }
 

@@ -471,25 +471,34 @@ unsigned jwin_context_window_count(jwin_context* ctx)
 #undef FREE
 #undef ALLOC
 
-static unsigned find_window_index(const jwin_context* ctx, Window wnd)
+unsigned find_window_index(const jwin_context* ctx, Window wnd)
 {
-    unsigned pos = 0, len = ctx->window_count, step = len / 2;
-    while (step > 1)
+    unsigned pos = 0, len = ctx->window_count, step = len - len / 2;
+    while (step > 8)
     {
-        if (ctx->window_array[pos + step]->hwnd <= wnd)
+        if (ctx->window_array[pos + step]->hwnd > wnd)
         {
-            pos += step;
-            len -= step;
-            step = (ctx->window_count - pos) / 2;
+            len = step;
         }
         else
         {
-            len = pos + step;
-            step /= 2;
+            pos += step;
+            len -= step;
+        }
+        step = len - len / 2;
+    }
+    for (unsigned i = pos; i < pos + len; ++i)
+    {
+        if (ctx->window_array[i]->hwnd > wnd)
+        {
+            return i - 1;
         }
     }
-    assert(pos < ctx->window_count);
-    return pos;
+    if (ctx->window_array[pos + len - 1]->hwnd == wnd)
+    {
+        return pos + len - 1;
+    }
+    return pos + len;
 }
 
 jwin_window* INTERNAL_find_window_from_xlib_handle(const jwin_context* ctx, Window wnd)
@@ -500,8 +509,7 @@ jwin_window* INTERNAL_find_window_from_xlib_handle(const jwin_context* ctx, Wind
     }
     //  ctx->window_array is sorted, so use binary search
     unsigned pos = find_window_index(ctx, wnd);
-
-    //  TODO: test this actually works as intended
+//    assert(ctx->window_array[pos]->hwnd == wnd);
     return ctx->window_array[pos]->hwnd == wnd ? ctx->window_array[pos] : NULL;
 }
 
