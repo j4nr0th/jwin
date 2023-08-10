@@ -1,0 +1,1 @@
+Simple windowing library, which was heavily inspired by GLFW, due to the state of Xlib documentation. Has fewer features and probably performs worse in every sense, but I wanted to have a try at writing something like this anyway.
