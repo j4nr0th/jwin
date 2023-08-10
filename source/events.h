@@ -135,31 +135,31 @@ enum jwin_keycode_T
     JWIN_KEY_LAST = 256,
 };
 
-const char* jwin_keycode_to_str(jwin_keycode keycode);
+JWIN_API const char* jwin_keycode_to_str(jwin_keycode keycode);
 
 
 enum jwin_mouse_button_type_T
 {
-    JWIN_MOUSE_BUTTON_TYPE_NONE         = 0,
-    JWIN_MOUSE_BUTTON_TYPE_LEFT         = 1,
-    JWIN_MOUSE_BUTTON_TYPE_MIDDLE       = 2,
-    JWIN_MOUSE_BUTTON_TYPE_RIGHT        = 3,
-    JWIN_MOUSE_BUTTON_TYPE_M4           = 4,
-    JWIN_MOUSE_BUTTON_TYPE_M5           = 5,
-    JWIN_MOUSE_BUTTON_TYPE_SCROLL_UP    = 6,
-    JWIN_MOUSE_BUTTON_TYPE_SCROLL_DN    = 7,
+    JWIN_MOUSE_BUTTON_TYPE_NONE = 0,
+    JWIN_MOUSE_BUTTON_TYPE_LEFT = 1,
+    JWIN_MOUSE_BUTTON_TYPE_MIDDLE = 2,
+    JWIN_MOUSE_BUTTON_TYPE_RIGHT = 3,
+    JWIN_MOUSE_BUTTON_TYPE_M4 = 4,
+    JWIN_MOUSE_BUTTON_TYPE_M5 = 5,
+    JWIN_MOUSE_BUTTON_TYPE_SCROLL_UP = 6,
+    JWIN_MOUSE_BUTTON_TYPE_SCROLL_DN = 7,
 };
 typedef enum jwin_mouse_button_type_T jwin_mouse_button_type;
 
-const char* jwin_mouse_button_type_to_str(jwin_mouse_button_type type);
+JWIN_API const char* jwin_mouse_button_type_to_str(jwin_mouse_button_type type);
 
 enum jwin_mod_state_type_T
 {
-    JWIN_MOD_STATE_TYPE_NONE    = 0,
-    JWIN_MOD_STATE_TYPE_SHIFT        = 1 << 0,
-    JWIN_MOD_STATE_TYPE_CTRL    = 1 << 1,
-    JWIN_MOD_STATE_TYPE_ALT    = 1 << 2,
-    JWIN_MOD_STATE_TYPE_SUPER    = 1 << 3,
+    JWIN_MOD_STATE_TYPE_NONE = 0,
+    JWIN_MOD_STATE_TYPE_SHIFT = 1 << 0,
+    JWIN_MOD_STATE_TYPE_CTRL = 1 << 1,
+    JWIN_MOD_STATE_TYPE_ALT = 1 << 2,
+    JWIN_MOD_STATE_TYPE_SUPER = 1 << 3,
     JWIN_MOD_STATE_TYPE_CAPSLOCK = 1 << 4,
     JWIN_MOD_STATE_TYPE_NUMLOCK = 1 << 5,
 };
@@ -300,33 +300,43 @@ typedef union jwin_event_any_T jwin_event_any;
 
 union jwin_event_callback_T
 {
-    void (*focus_gain)(const jwin_event_focus_gain* event, void* param);
-    void (*focus_lose)(const jwin_event_focus_lose* event, void* param);
+    void (* focus_gain)(const jwin_event_focus_gain* event, void* param);
 
-    void (*mouse_enter)(const jwin_event_mouse_enter* event, void* param);
-    void (*mouse_leave)(const jwin_event_mouse_leave* event, void* param);
+    void (* focus_lose)(const jwin_event_focus_lose* event, void* param);
 
-    void (*mouse_motion)(const jwin_event_mouse_motion* event, void* param);
+    void (* mouse_enter)(const jwin_event_mouse_enter* event, void* param);
 
-    void (*mouse_button_press)(const jwin_event_mouse_button_press* event, void* param);
-    void (*mouse_button_release)(const jwin_event_mouse_button_release* event, void* param);
-    void (*mouse_button_double_press)(const jwin_event_mouse_button_double_press* event, void* param);
+    void (* mouse_leave)(const jwin_event_mouse_leave* event, void* param);
 
-    void (*key_press)(const jwin_event_key_press* event, void* param);
-    void (*key_release)(const jwin_event_key_release* event, void* param);
-    void (*key_char)(const jwin_event_key_char* event, void* param);
+    void (* mouse_motion)(const jwin_event_mouse_motion* event, void* param);
 
-    void (*move)(const jwin_event_move* event, void* param);
-    void (*resize)(const jwin_event_resize* event, void* param);
-    void (*refresh)(const jwin_event_refresh* event, void* param);
+    void (* mouse_button_press)(const jwin_event_mouse_button_press* event, void* param);
 
-    int (*close)(const jwin_event_close* event, void* param);
-    void (*destroy)(const jwin_event_destroy* event, void* param);
+    void (* mouse_button_release)(const jwin_event_mouse_button_release* event, void* param);
 
-    void (*custom)(const jwin_event_custom* event, void* param);
+    void (* mouse_button_double_press)(const jwin_event_mouse_button_double_press* event, void* param);
+
+    void (* key_press)(const jwin_event_key_press* event, void* param);
+
+    void (* key_release)(const jwin_event_key_release* event, void* param);
+
+    void (* key_char)(const jwin_event_key_char* event, void* param);
+
+    void (* move)(const jwin_event_move* event, void* param);
+
+    void (* resize)(const jwin_event_resize* event, void* param);
+
+    void (* refresh)(const jwin_event_refresh* event, void* param);
+
+    int (* close)(const jwin_event_close* event, void* param);
+
+    void (* destroy)(const jwin_event_destroy* event, void* param);
+
+    void (* custom)(const jwin_event_custom* event, void* param);
 
     void* any;
 };
+
 typedef union jwin_event_callback_T jwin_event_callback;
 
 struct jwin_event_handler_T
@@ -338,10 +348,12 @@ struct jwin_event_handler_T
 typedef struct jwin_event_handler_T jwin_event_handler;
 
 
-size_t jwin_event_to_str(size_t buf_size, char* buffer, const jwin_event_any* event);
+size_t JWIN_API jwin_event_to_str(size_t buf_size, char* buffer, const jwin_event_any* event);
 
-void jwin_context_set_event_hook(jwin_context* ctx, void(*hook)(const jwin_event_any* e, void* param), void* param);
+JWIN_API void
+jwin_context_set_event_hook(jwin_context* ctx, void(* hook)(const jwin_event_any* e, void* param), void* param);
 
-void jwin_window_set_event_hook(jwin_window* win, void(*hook)(const jwin_event_any* e, void* param), void* param);
+JWIN_API void
+jwin_window_set_event_hook(jwin_window* win, void(* hook)(const jwin_event_any* e, void* param), void* param);
 
 #endif //JWIN_EVENTS_H

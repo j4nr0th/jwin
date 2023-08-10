@@ -18,6 +18,7 @@ static int x_error_code;
 
 static int x_error_handler(Display* dpy, XErrorEvent* e)
 {
+    (void) dpy;
     x_error_code = e->error_code;
     return 0;
 }
@@ -127,7 +128,7 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
         }
         else
         {
-            class_hint.res_name = (char*)"jwin-program";
+            class_hint.res_name = (char*) "jwin-program";
         }
 
         if (info.title && *info.title)
@@ -136,18 +137,20 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
         }
         else
         {
-            class_hint.res_name = (char*)"jwin-program";
+            class_hint.res_name = (char*) "jwin-program";
         }
     }
     XSetClassHint(dpy, hwnd, &class_hint);
 
     //  Create input context
-    XIC ic = XCreateIC(ctx->input_method,
+    XIC ic = XCreateIC(
+            ctx->input_method,
 //                       XNInputStyle, XIMPreeditNothing|XIMStatusNothing,
 //                       XNClientWindow, hwnd,
 //                       XNFocusWindow, hwnd,
-                       XNPreeditAttributes, XIMPreeditNone, XNStatusAttributes, XIMStatusNone, XNInputStyle, XIMStatusNone|XIMPreeditNone,
-                       NULL);
+            XNPreeditAttributes, XIMPreeditNone, XNStatusAttributes, XIMStatusNone, XNInputStyle,
+            XIMStatusNone | XIMPreeditNone,
+            NULL);
     if (ic)
     {
         XWindowAttributes attibs;
@@ -155,7 +158,7 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
         long add = 0;
         if (XGetICValues(ic, XNFilterEvents, &add, NULL) == NULL)
         {
-            XSelectInput(dpy, hwnd, attibs.your_event_mask|add);
+            XSelectInput(dpy, hwnd, attibs.your_event_mask | add);
         }
     }
 
@@ -213,11 +216,11 @@ jwin_result jwin_window_destroy(jwin_window* win)
     (* dtor)(const jwin_event_destroy*, void*) = win->event_handlers[JWIN_EVENT_TYPE_DESTROY].callback.destroy;
     const jwin_event_destroy event =
             {
-            .type = JWIN_EVENT_TYPE_DESTROY,
-            .window = win,
-            .context = ctx,
+                    .type = JWIN_EVENT_TYPE_DESTROY,
+                    .window = win,
+                    .context = ctx,
             };
-    CALL_EVENT_HOOKS(win, (jwin_event_any){ .destroy = event });
+    CALL_EVENT_HOOKS(win, (jwin_event_any) { .destroy = event });
     if (dtor)
     {
         dtor(&event, win->event_handlers[JWIN_EVENT_TYPE_DESTROY].param);
@@ -242,7 +245,8 @@ jwin_window_set_event_handler(jwin_window* win, jwin_event_type type, jwin_event
 {
     if (type <= JWIN_EVENT_TYPE_NONE || type >= JWIN_EVENT_TYPE_COUNT)
     {
-        REPORT_ERROR(win->ctx, "Event type was given as %d, should be [%d, %d]", type, JWIN_EVENT_TYPE_NONE + 1, JWIN_EVENT_TYPE_COUNT - 1);
+        REPORT_ERROR(win->ctx, "Event type was given as %d, should be [%d, %d]", type, JWIN_EVENT_TYPE_NONE + 1,
+                     JWIN_EVENT_TYPE_COUNT - 1);
         return JWIN_RESULT_BAD_EVENT_TYPE;
     }
     win->event_handlers[type].type = type;
@@ -256,7 +260,8 @@ jwin_result jwin_window_get_event_handler(jwin_window* win, jwin_event_type type
 {
     if (type <= JWIN_EVENT_TYPE_NONE || type >= JWIN_EVENT_TYPE_COUNT)
     {
-        REPORT_ERROR(win->ctx, "Event type was given as %d, should be [%d, %d]", type, JWIN_EVENT_TYPE_NONE + 1, JWIN_EVENT_TYPE_COUNT - 1);
+        REPORT_ERROR(win->ctx, "Event type was given as %d, should be [%d, %d]", type, JWIN_EVENT_TYPE_NONE + 1,
+                     JWIN_EVENT_TYPE_COUNT - 1);
         return JWIN_RESULT_BAD_EVENT_TYPE;
     }
     *p_out = win->event_handlers[type];
@@ -286,9 +291,9 @@ jwin_result jwin_window_close(jwin_window* win)
     {
         const jwin_event_close event =
                 {
-                .type = JWIN_EVENT_TYPE_CLOSE,
-                .context = win->ctx,
-                .window = win,
+                        .type = JWIN_EVENT_TYPE_CLOSE,
+                        .context = win->ctx,
+                        .window = win,
                 };
         destroy = close_handler(&event, win->event_handlers[JWIN_EVENT_TYPE_CLOSE].param);
     }
@@ -325,7 +330,7 @@ jwin_result jwin_window_ask_to_close(jwin_window* win)
     return JWIN_RESULT_SUCCESS;
 }
 
-void jwin_window_set_event_hook(jwin_window* win, void(*hook)(const jwin_event_any* e, void* param), void* param)
+void jwin_window_set_event_hook(jwin_window* win, void(* hook)(const jwin_event_any* e, void* param), void* param)
 {
     win->event_hook = hook;
     win->event_param = param;

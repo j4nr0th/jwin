@@ -28,10 +28,16 @@ add_library(jwin
 )
 
 if (WIN32)
-    target_link_libraries(jwin PRIVATE )
+    target_link_libraries(jwin PRIVATE)
 else ()
     target_link_libraries(jwin PRIVATE X11 X11-xcb)
 endif ()
+
+if (CMAKE_C_COMPILER_ID STREQUAL GNU)
+    target_compile_options(jwin PRIVATE -Wall -Wextra -Werror)
+endif ()
+
+target_compile_definitions(jwin PRIVATE JWIN_BUILD_LIBRARY)
 
 enable_testing()
 add_executable(base_test test/base_test.c

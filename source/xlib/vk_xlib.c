@@ -37,8 +37,8 @@ jwin_window_create_window_vk_surface(
 
 static const char* const VK_EXTENSION_NAMES[] =
         {
-            "VK_KHR_surface",
-            "VK_KHR_xcb_surface",
+                "VK_KHR_surface",
+                "VK_KHR_xcb_surface",
         };
 
 static const unsigned VK_EXTENSION_COUNT = sizeof(VK_EXTENSION_NAMES) / sizeof(*VK_EXTENSION_NAMES);

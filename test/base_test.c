@@ -7,12 +7,13 @@
 
 static void error_report_callback(const char* msg, const char* file, int line, const char* function, void* state)
 {
+    (void) state;
     fprintf(stderr, "%s:%d - %s: \"%s\"\n", file, line, function, msg);
 }
 
 static void destroy_callback(const jwin_event_destroy* e, void* param)
 {
-    printf("Destroying the window, message was: %s\n", (const char*)param);
+    printf("Destroying the window, message was: %s\n", (const char*) param);
     jwin_context_mark_to_close(e->context);
 }
 
@@ -27,7 +28,7 @@ static void context_event_hook(const jwin_event_any* e, void* param)
 //    {
 //        printf("Pressed %s\n", jwin_keycode_to_str(e->key_press.keycode));
 //    }
-    (void)param;
+    (void) param;
 }
 
 int main()
@@ -59,7 +60,7 @@ int main()
             };
     JWIN_TEST_CALL(jwin_window_create(ctx, &win_info, &wnd));
     ASSERT(res == JWIN_RESULT_SUCCESS);
-;
+
     jwin_context_set_event_hook(ctx, context_event_hook, NULL);
 
     const time_t t_begin = time(NULL);

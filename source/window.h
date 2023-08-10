@@ -4,7 +4,9 @@
 
 #ifndef JWIN_WINDOW_H
 #define JWIN_WINDOW_H
+
 #include "common.h"
+#include "error.h"
 #include "events.h"
 
 struct jwin_window_create_info_T
@@ -26,25 +28,26 @@ struct jwin_window_create_info_T
 };
 typedef struct jwin_window_create_info_T jwin_window_create_info;
 
-jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info* create_info, jwin_window** p_out);
+JWIN_API jwin_result
+jwin_window_create(jwin_context* ctx, const jwin_window_create_info* create_info, jwin_window** p_out);
 
-jwin_result jwin_window_destroy(jwin_window* win);
+JWIN_API jwin_result jwin_window_destroy(jwin_window* win);
 
-jwin_result
+JWIN_API jwin_result
 jwin_window_set_event_handler(jwin_window* win, jwin_event_type type, jwin_event_callback callback, void* param);
 
-jwin_result jwin_window_get_event_handler(jwin_window* win, jwin_event_type type, jwin_event_handler* p_out);
+JWIN_API jwin_result jwin_window_get_event_handler(jwin_window* win, jwin_event_type type, jwin_event_handler* p_out);
 
-jwin_result jwin_window_send_custom_event(jwin_window* win, const jwin_event_custom* event);
+JWIN_API jwin_result jwin_window_send_custom_event(jwin_window* win, const jwin_event_custom* event);
 
-jwin_result jwin_window_close(jwin_window* win);
+JWIN_API jwin_result jwin_window_close(jwin_window* win);
 
-jwin_result jwin_window_ask_to_close(jwin_window* win);
+JWIN_API jwin_result jwin_window_ask_to_close(jwin_window* win);
 
-jwin_result jwin_window_set_title(jwin_window* win, const char* new_title);
+JWIN_API jwin_result jwin_window_set_title(jwin_window* win, const char* new_title);
 
-void jwin_window_show(jwin_window* win);
+JWIN_API void jwin_window_show(jwin_window* win);
 
-void jwin_window_hide(jwin_window* win);
+JWIN_API void jwin_window_hide(jwin_window* win);
 
 #endif //JWIN_WINDOW_H

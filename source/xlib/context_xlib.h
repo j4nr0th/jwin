@@ -91,13 +91,16 @@ struct jwin_context_T
     int xkb_event_code;
 
     void (* event_hook)(const jwin_event_any*, void*);
+
     void* event_param;
 };
 
 #ifdef __GNUC__
+
 __attribute__((format(printf, 5, 6)))
 #endif
-static inline void INTERNAL_report_error(const jwin_context* ctx, const char* file, int line, const char* function, const char* fmt, ...)
+static inline void
+INTERNAL_report_error(const jwin_context* ctx, const char* file, int line, const char* function, const char* fmt, ...)
 {
     if (!ctx->error_callbacks.report)
     {
@@ -112,7 +115,7 @@ static inline void INTERNAL_report_error(const jwin_context* ctx, const char* fi
     char* const msg_buffer = ctx->allocator_callbacks.alloc(ctx->allocator_callbacks.state, len + 1);
     if (msg_buffer)
     {
-        (void)vsnprintf(msg_buffer, len + 1, fmt, args);
+        (void) vsnprintf(msg_buffer, len + 1, fmt, args);
         ctx->error_callbacks.report(msg_buffer, file, line, function, ctx->error_callbacks.state);
         ctx->allocator_callbacks.free(ctx->allocator_callbacks.state, msg_buffer);
     }
@@ -131,18 +134,18 @@ static inline void INTERNAL_context_event_hook(const jwin_context* ctx, const jw
 
 #define REPORT_ERROR(ctx, fmt, ...) INTERNAL_report_error(ctx, __FILE__, __LINE__, __func__, fmt __VA_OPT__(,) __VA_ARGS__)
 
-jwin_result INTERNAL_handle_xlib_event(jwin_context* ctx, const XEvent* e);
+JWIN_LOCAL jwin_result INTERNAL_handle_xlib_event(jwin_context* ctx, const XEvent* e);
 
-jwin_window* INTERNAL_find_window_from_xlib_handle(const jwin_context* ctx, Window wnd);
+JWIN_LOCAL jwin_window* INTERNAL_find_window_from_xlib_handle(const jwin_context* ctx, Window wnd);
 
-jwin_result INTERNAL_add_window_to_context(jwin_context* ctx, jwin_window* win);
+JWIN_LOCAL jwin_result INTERNAL_add_window_to_context(jwin_context* ctx, jwin_window* win);
 
-jwin_result INTERNAL_remove_window_from_context(jwin_context* ctx, const jwin_window* win);
+JWIN_LOCAL jwin_result INTERNAL_remove_window_from_context(jwin_context* ctx, const jwin_window* win);
 
-jwin_result INTERNAL_wait_for_xlib(const jwin_context* ctx);
+JWIN_LOCAL jwin_result INTERNAL_wait_for_xlib(const jwin_context* ctx);
 
-jwin_result INTERNAL_wait_for_any(const jwin_context* ctx, int ms_timeout);
+JWIN_LOCAL jwin_result INTERNAL_wait_for_any(const jwin_context* ctx, int ms_timeout);
 
-jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEvent* event);
+JWIN_LOCAL jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEvent* event);
 
 #endif //JWIN_CONTEXT_XLIB_H

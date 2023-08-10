@@ -12,7 +12,7 @@ static void error_report_callback(const char* msg, const char* file, int line, c
 
 static void destroy_callback(const jwin_event_destroy* e, void* param)
 {
-    printf("Destroying the window, message was: %s\n", (const char*)param);
+    printf("Destroying the window, message was: %s\n", (const char*) param);
     jwin_context_mark_to_close(e->context);
 }
 
@@ -23,7 +23,7 @@ static void context_event_hook(const jwin_event_any* e, void* param)
     ASSERT(len <= sizeof(buffer));
     printf("Event str length: %zu\n%s\n\n", len, buffer);
 
-    (void)param;
+    (void) param;
 }
 
 #define WINDOW_COUNT (16)
@@ -60,13 +60,13 @@ int main()
         JWIN_TEST_CALL(jwin_window_create(ctx, &win_info, wnd_array + i));
         ASSERT(res == JWIN_RESULT_SUCCESS);
     }
-;
+
     jwin_context_set_event_hook(ctx, context_event_hook, NULL);
 
     time_t t_begin = time(NULL);
     const time_t t_zero = t_begin;
 
-    unsigned window_close_array[5] = {2, 5, 6, 1, 9};
+    unsigned window_close_array[5] = { 2, 5, 6, 1, 9 };
     unsigned i = 0;
 
     while ((res = jwin_context_wait_for_events(ctx)) == JWIN_RESULT_SUCCESS)

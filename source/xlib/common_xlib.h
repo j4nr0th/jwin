@@ -4,6 +4,7 @@
 
 #ifndef JWIN_COMMON_XLIB_H
 #define JWIN_COMMON_XLIB_H
+
 #include "../common.h"
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>

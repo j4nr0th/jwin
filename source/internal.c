@@ -28,8 +28,8 @@ static void deallocate(void* state, void* ptr)
 
 const jwin_allocator_callbacks JWIN_DEFAULT_ALLOCATOR_CALLBACKS =
         {
-            .alloc = allocate,
-            .realloc = reallocate,
-            .free = deallocate,
-            .state = (void*)test_ptr,
+                .alloc = allocate,
+                .realloc = reallocate,
+                .free = deallocate,
+                .state = (void*) test_ptr,
         };

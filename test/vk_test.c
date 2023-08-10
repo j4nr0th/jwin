@@ -12,9 +12,10 @@ static void error_report_callback(const char* msg, const char* file, int line, c
 
 static void destroy_callback(const jwin_event_destroy* e, void* param)
 {
-    printf("Destroying the window, message was: %s\n", (const char*)param);
+    printf("Destroying the window, message was: %s\n", (const char*) param);
     jwin_context_mark_to_close(e->context);
 }
+
 int main()
 {
     jwin_context* ctx;
@@ -55,9 +56,9 @@ int main()
     jwin_required_vk_extensions(&jwin_extension_count, &jwin_extension_names);
     VkInstanceCreateInfo create_info =
             {
-            .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-            .enabledExtensionCount = jwin_extension_count,
-            .ppEnabledExtensionNames = jwin_extension_names,
+                    .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+                    .enabledExtensionCount = jwin_extension_count,
+                    .ppEnabledExtensionNames = jwin_extension_names,
             };
     VkResult vk_res = vkCreateInstance(&create_info, NULL, &instance);
     ASSERT(vk_res == VK_SUCCESS);

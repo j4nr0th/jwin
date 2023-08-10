@@ -5,6 +5,8 @@
 #ifndef JWIN_ERROR_H
 #define JWIN_ERROR_H
 
+#include "common.h"
+
 enum jwin_result_T
 {
     JWIN_RESULT_SUCCESS = 0,
@@ -27,9 +29,9 @@ enum jwin_result_T
 
 typedef enum jwin_result_T jwin_result;
 
-const char* jwin_result_msg_str(jwin_result res);
+JWIN_API const char* jwin_result_msg_str(jwin_result res);
 
-const char* jwin_result_to_str(jwin_result res);
+JWIN_API const char* jwin_result_to_str(jwin_result res);
 
 #ifndef JWIN_SUCCESS
 #define JWIN_SUCCESS(x) ((x) == JWIN_RESULT_SUCCESS)

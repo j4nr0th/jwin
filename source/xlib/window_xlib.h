@@ -4,6 +4,7 @@
 
 #ifndef JWIN_WINDOW_XLIB_H
 #define JWIN_WINDOW_XLIB_H
+
 #include "common_xlib.h"
 #include "../window.h"
 
@@ -26,6 +27,7 @@ struct jwin_window_T
     unsigned long double_click_time;
 
     void (* event_hook)(const jwin_event_any*, void*);
+
     void* event_param;
     int should_close;
 };
@@ -37,7 +39,6 @@ static inline void INTERNAL_window_event_hook(const jwin_window* win, const jwin
         win->event_hook(&e, win->event_param);
     }
 }
-
 
 
 #endif //JWIN_WINDOW_XLIB_H

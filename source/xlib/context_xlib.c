@@ -20,6 +20,7 @@ static int x_error_code;
 
 static int x_error_handler(Display* dpy, XErrorEvent* e)
 {
+    (void) dpy;
     x_error_code = e->error_code;
     return 0;
 }
@@ -297,7 +298,7 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
             {
                 for (unsigned i = 0; i < sizeof(key_table) / sizeof(*key_table); ++i)
                 {
-                    for (unsigned j = 0; j < ks_per_keycode; ++j)
+                    for (unsigned j = 0; j < (unsigned) ks_per_keycode; ++j)
                     {
                         if (!key_table[i].found && key_table[i].backup_ks == key_syms[ks_per_keycode * i + j])
                         {
@@ -548,7 +549,7 @@ jwin_result jwin_context_handle_event(jwin_context* ctx)
         INTERNAL_process_xlib_event(ctx, last_wnd, &e);
     }
 
-end:
+    end:
     XFlush(ctx->dpy);
 
     if (ctx->should_close)
@@ -664,7 +665,7 @@ jwin_result INTERNAL_add_window_to_context(jwin_context* ctx, jwin_window* win)
         jwin_window** const new_ptr = ctx->allocator_callbacks.realloc(
                 ctx->allocator_callbacks.state,
                 ctx->window_array,
-                sizeof(*ctx->window_array) * new_capacity);
+                sizeof(jwin_window*) * new_capacity);
         if (!new_ptr)
         {
             REPORT_ERROR(ctx, "Could not (re-)allocate memory for window array");
@@ -672,7 +673,7 @@ jwin_result INTERNAL_add_window_to_context(jwin_context* ctx, jwin_window* win)
         }
 #ifndef NDEBUG
         //  On debug mode fill it up with garbage
-        memset(new_ptr + ctx->window_count, 0xCC, sizeof(*new_ptr) * (new_capacity - ctx->window_capacity));
+        memset(new_ptr + ctx->window_count, 0xCC, sizeof(jwin_window*) * (new_capacity - ctx->window_capacity));
 #endif
         ctx->window_array = new_ptr;
         ctx->window_capacity = new_capacity;
@@ -706,7 +707,7 @@ jwin_result INTERNAL_add_window_to_context(jwin_context* ctx, jwin_window* win)
 
         memmove(
                 ctx->window_array + pos + 1, ctx->window_array + pos,
-                sizeof(*ctx->window_array) * (ctx->window_count - pos));
+                sizeof(jwin_window*) * (ctx->window_count - pos));
         ctx->window_array[pos] = win;
         ctx->window_count += 1;
     }
@@ -729,7 +730,7 @@ jwin_result INTERNAL_remove_window_from_context(jwin_context* ctx, const jwin_wi
 
     memmove(
             ctx->window_array + pos, ctx->window_array + pos + 1,
-            sizeof(*ctx->window_array) * (ctx->window_count - pos - 1));
+            sizeof(jwin_window*) * (ctx->window_count - pos - 1));
     ctx->window_array[ctx->window_count] = (void*) 0xCCCCCCCCCCCCCCCC;
     ctx->window_count -= 1;
 
@@ -1244,7 +1245,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
         if (should_process_event(win, JWIN_EVENT_TYPE_RESIZE))
         {
             const XConfigureEvent* cfg = &event->xconfigure;
-            if (cfg->width != win->width || cfg->height != win->height)
+            if ((unsigned) cfg->width != win->width || (unsigned) cfg->height != win->height)
             {
                 void (* resize)(
                         const jwin_event_resize*, void*) = win->event_handlers[JWIN_EVENT_TYPE_RESIZE].callback.resize;
@@ -1283,7 +1284,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
                 void (* move)(const jwin_event_move*, void*) = win->event_handlers[JWIN_EVENT_TYPE_MOVE].callback.move;
                 jwin_event_move e =
                         {
-                                .base = {.type = JWIN_EVENT_TYPE_MOVE, .context = ctx, .window = win},
+                                .base = { .type = JWIN_EVENT_TYPE_MOVE, .context = ctx, .window = win },
                                 .x = x,
                                 .y = y,
                         };
@@ -1364,4 +1365,15 @@ void jwin_context_set_event_hook(jwin_context* ctx, void (* hook)(const jwin_eve
 {
     ctx->event_hook = hook;
     ctx->event_param = param;
+}
+
+
+Display* jwin_context_native_xlib(jwin_context* ctx)
+{
+    return ctx->dpy;
+}
+
+xcb_connection_t* jwin_contex_native_xcb(jwin_context* ctx)
+{
+    return ctx->xcb_connection;
 }
