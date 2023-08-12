@@ -271,9 +271,9 @@ jwin_result jwin_window_get_event_handler(jwin_window* win, jwin_event_type type
 
 jwin_result jwin_window_send_custom_event(jwin_window* win, const jwin_event_custom* event)
 {
-    if (event->base.type != JWIN_EVENT_TYPE_CUSTOM)
+    if (event->base.type < JWIN_EVENT_TYPE_CUSTOM)
     {
-        REPORT_ERROR(win->ctx, "Event type was not custom (%d), but was %d", JWIN_EVENT_TYPE_CUSTOM, event->base.type);
+        REPORT_ERROR(win->ctx, "Event type was not custom + i (%d), but was %d", JWIN_EVENT_TYPE_CUSTOM, event->base.type);
         return JWIN_RESULT_BAD_EVENT_TYPE;
     }
 
