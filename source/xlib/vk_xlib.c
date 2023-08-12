@@ -13,7 +13,7 @@ jwin_window_create_window_vk_surface(
 {
     VkXcbSurfaceCreateInfoKHR create_info =
             {
-                    .sType = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR,
+                    .sType = VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR,
                     .window = win->hwnd,
                     .flags = 0,
                     .connection = win->ctx->xcb_connection,
