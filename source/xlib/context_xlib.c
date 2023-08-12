@@ -523,7 +523,7 @@ jwin_result jwin_context_handle_event(jwin_context* ctx)
     {
         jwin_window* win = event_custom.base.window;
         assert(event_custom.base.context == ctx);
-        assert(event_custom.base.type == JWIN_EVENT_TYPE_CUSTOM);
+        assert(event_custom.base.type >= JWIN_EVENT_TYPE_CUSTOM);
         void
         (* callback)(const jwin_event_custom*, void*) = win->event_handlers[JWIN_EVENT_TYPE_CUSTOM].callback.custom;
         if (callback)
@@ -595,7 +595,7 @@ jwin_result jwin_context_handle_events(jwin_context* ctx)
         {
             jwin_window* win = event_custom.base.window;
             assert(event_custom.base.context == ctx);
-            assert(event_custom.base.type == JWIN_EVENT_TYPE_CUSTOM);
+            assert(event_custom.base.type >= JWIN_EVENT_TYPE_CUSTOM);
             void
             (* callback)(const jwin_event_custom*, void*) = win->event_handlers[JWIN_EVENT_TYPE_CUSTOM].callback.custom;
             if (callback)
