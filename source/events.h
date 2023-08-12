@@ -224,7 +224,7 @@ struct jwin_event_mouse_button_T
     jwin_event_base base;
     jwin_mouse_button_type button;
     jwin_mod_state_type mods;
-    unsigned x, y;
+    int x, y;
 };
 typedef struct jwin_event_mouse_button_T jwin_event_mouse_button_press;
 typedef struct jwin_event_mouse_button_T jwin_event_mouse_button_release;
