@@ -215,7 +215,7 @@ struct jwin_event_mouse_motion_T
 {
     jwin_event_base base;
     jwin_mod_state_type mods;
-    unsigned x, y;
+    int x, y;
 };
 typedef struct jwin_event_mouse_motion_T jwin_event_mouse_motion;
 

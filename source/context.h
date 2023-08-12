@@ -38,7 +38,7 @@ JWIN_API jwin_result jwin_context_handle_events(jwin_context* ctx);
 
 JWIN_API int jwin_context_should_close(jwin_context* ctx);
 
-
+#ifdef JWIN_NATIVE_HANDLES
 #ifndef _WIN32
 
 #include <X11/Xlib-xcb.h>
@@ -47,8 +47,13 @@ JWIN_API Display* jwin_context_native_xlib(jwin_context* ctx);
 
 JWIN_API xcb_connection_t* jwin_contex_native_xcb(jwin_context* ctx);
 
+JWIN_API Window jwin_contex_native_window_xlib(jwin_window* win);
+
+JWIN_API xcb_window_t jwin_contex_native_window_xcb(jwin_window* win);
+
+
 #else
 #error not implemented yet
 #endif
-
+#endif
 #endif //JWIN_CONTEXT_H

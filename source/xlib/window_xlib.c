@@ -347,3 +347,14 @@ void jwin_window_set_event_hook(jwin_window* win, void(* hook)(const jwin_event_
     win->event_hook = hook;
     win->event_param = param;
 }
+
+Window jwin_contex_native_window_xlib(jwin_window* win)
+{
+    return win->hwnd;
+}
+
+xcb_window_t jwin_contex_native_window_xcb(jwin_window* win)
+{
+    return (xcb_window_t)win->hwnd;
+}
+
