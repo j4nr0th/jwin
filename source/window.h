@@ -50,4 +50,8 @@ JWIN_API void jwin_window_show(jwin_window* win);
 
 JWIN_API void jwin_window_hide(jwin_window* win);
 
+JWIN_API void jwin_window_get_size(jwin_window* win, unsigned* p_width, unsigned* p_height);
+
+JWIN_API void jwin_window_get_position(jwin_window* win, int* p_x, int* p_y);
+
 #endif //JWIN_WINDOW_H

@@ -330,6 +330,18 @@ jwin_result jwin_window_ask_to_close(jwin_window* win)
     return JWIN_RESULT_SUCCESS;
 }
 
+void jwin_window_get_size(jwin_window* win, unsigned int* p_width, unsigned int* p_height)
+{
+    *p_width = win->width;
+    *p_height = win->height;
+}
+
+void jwin_window_get_position(jwin_window* win, int* p_x, int* p_y)
+{
+    *p_x = win->x;
+    *p_y = win->y;
+}
+
 void jwin_window_set_event_hook(jwin_window* win, void(* hook)(const jwin_event_any* e, void* param), void* param)
 {
     win->event_hook = hook;
