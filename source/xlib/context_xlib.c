@@ -1008,7 +1008,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
                 const jwin_mod_state_type mods = xlib_mods_to_jwin_mods(event->xbutton.state);
                 const unsigned long dt = event->xbutton.time - win->button_press_times[event->xbutton.button - Button1];
                 win->button_press_times[event->xbutton.button - Button1] = event->xbutton.time;
-                if (dt < win->double_click_time)
+                if (dt < win->double_click_time && (button != JWIN_MOUSE_BUTTON_TYPE_SCROLL_UP && button != JWIN_MOUSE_BUTTON_TYPE_SCROLL_DN))
                 {
                     //  It was a double click
                     jwin_event_mouse_button_double_press e =
