@@ -853,10 +853,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
         break;
 
     case KeyPress:
-        if (saved_keycode < JWIN_KEY_LAST &&
-            (
-                    should_process_event(win, JWIN_EVENT_TYPE_KEY_PRESS) ||
-                    should_process_event(win, JWIN_EVENT_TYPE_KEY_CHARACTER)))
+        if (saved_keycode < JWIN_KEY_LAST)
         {
             const int repeated = ctx->key_state[saved_keycode] == JWIN_KEY_STATE_DOWN;
             ctx->key_state[saved_keycode] = JWIN_KEY_STATE_DOWN;
@@ -883,7 +880,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
             void (* kc_callback)(
                     const jwin_event_key_char*,
                     void*) = win->event_handlers[JWIN_EVENT_TYPE_KEY_CHARACTER].callback.key_char;
-            if (!filtered)
+            if (!filtered && kc_callback)
             {
                 int count;
                 Status s;
@@ -970,8 +967,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
         break;
 
     case KeyRelease:
-        if (saved_keycode < JWIN_KEY_LAST &&
-            (should_process_event(win, JWIN_EVENT_TYPE_KEY_RELEASE)))
+        if (saved_keycode < JWIN_KEY_LAST)
         {
             ctx->key_state[saved_keycode] = JWIN_KEY_STATE_UP;
 
@@ -1177,9 +1173,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
         break;
 
     case FocusIn:
-        if ((event->xfocus.mode != NotifyGrab && event->xfocus.mode != NotifyUngrab) &&
-            should_process_event(win, JWIN_EVENT_TYPE_FOCUS_GAIN)
-                )
+        if ((event->xfocus.mode != NotifyGrab && event->xfocus.mode != NotifyUngrab))
         {
             void (* gain)(
                     const jwin_event_focus_gain*,
@@ -1200,8 +1194,7 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
         break;
 
     case FocusOut:
-        if (event->xfocus.mode != NotifyGrab && event->xfocus.mode != NotifyUngrab &&
-            should_process_event(win, JWIN_EVENT_TYPE_FOCUS_LOSE))
+        if (event->xfocus.mode != NotifyGrab && event->xfocus.mode != NotifyUngrab)
         {
             void (* lose)(
                     const jwin_event_focus_gain*,
@@ -1242,7 +1235,6 @@ jwin_result INTERNAL_process_xlib_event(jwin_context* ctx, jwin_window* win, XEv
         break;
 
     case ConfigureNotify:
-        if (should_process_event(win, JWIN_EVENT_TYPE_RESIZE))
         {
             const XConfigureEvent* cfg = &event->xconfigure;
             if ((unsigned) cfg->width != win->width || (unsigned) cfg->height != win->height)
