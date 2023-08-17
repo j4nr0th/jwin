@@ -438,7 +438,7 @@ LRESULT CALLBACK INTERNAL_window_proc(HWND wnd, UINT type, WPARAM wparam, LPARAM
     {
         jwin_window* const win = (jwin_window*)GetWindowLongPtr(wnd, GWLP_USERDATA);
         jwin_context* const ctx = win->ctx;
-        const int repeated = lparam & 0xFFFF != 0;
+        const int repeated = (lparam & 0xFFFF) != 0;
 
         void (*kp_callback)(
             const jwin_event_key_press*,
@@ -453,7 +453,6 @@ LRESULT CALLBACK INTERNAL_window_proc(HWND wnd, UINT type, WPARAM wparam, LPARAM
                 .mods = mods,
                 .repeated = repeated,
         };
-        printf("Actual key code: %04hx\n", (unsigned short)(wparam & 0xFFFF));
         CALL_EVENT_HOOKS(win, (jwin_event_any) { .key_press = ev });
         if (kp_callback)
         {

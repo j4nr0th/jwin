@@ -13,6 +13,7 @@
 #		define ASSERTION_FAIL_COMMAND __debugbreak()
 #	endif
 #else
+#	include <stdlib.h>
 #   define ASSERTION_FAIL_COMMAND exit(EXIT_FAILURE)
 #endif
 
