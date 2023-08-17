@@ -22,9 +22,9 @@ struct jwin_window_create_info_T
     {
         const char* instance_name;
         const char* class_name;
+        unsigned long double_click_time_ms;
     } xorg;
 #endif
-    unsigned long double_click_time_ms;
 };
 typedef struct jwin_window_create_info_T jwin_window_create_info;
 

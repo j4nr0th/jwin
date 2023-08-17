@@ -6,7 +6,11 @@
 #include <assert.h>
 #include <malloc.h>
 
+#ifndef _WIN32
 static const char* const test_ptr = "Don't let your memes be dreams";
+#else
+#define test_ptr ((void*)0xBadBabeBeefCafe)
+#endif
 
 static void* allocate(void* state, uint64_t size)
 {

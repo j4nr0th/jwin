@@ -7,24 +7,25 @@
 
 static void error_report_callback(const char* msg, const char* file, int line, const char* function, void* state)
 {
-    fprintf(stderr, "%s:%d - %s: \"%s\"\n", file, line, function, msg);
+    (void)fprintf(stderr, "%s:%d - %s: \"%s\"\n", file, line, function, msg);
 }
 
 static void destroy_callback(const jwin_event_destroy* e, void* param)
 {
+    (void)param;
     printf("Destroying the window, message was: %s\n", (const char*) param);
     jwin_context_mark_to_close(e->context);
 }
 
-int main()
+int main(void)
 {
     jwin_context* ctx;
-    jwin_error_callbacks error_callbacks =
+    const jwin_error_callbacks error_callbacks =
             {
                     .state = NULL,
                     .report = error_report_callback,
             };
-    jwin_context_create_info ctx_info =
+    const jwin_context_create_info ctx_info =
             {
                     .allocator_callbacks = NULL,
                     .error_callbacks = &error_callbacks,
@@ -34,14 +35,13 @@ int main()
     ASSERT(res == JWIN_RESULT_SUCCESS);
 
     jwin_window* wnd;
-    jwin_window_create_info win_info =
+    const jwin_window_create_info win_info =
             {
                     .title = "Cool window",
                     .visible = 1,
                     .width = 720,
                     .height = 480,
                     .fixed_size = 0,
-                    .double_click_time_ms = 1000,
             };
     JWIN_TEST_CALL(jwin_window_create(ctx, &win_info, &wnd));
     ASSERT(res == JWIN_RESULT_SUCCESS);
@@ -54,7 +54,7 @@ int main()
     unsigned jwin_extension_count;
     const char* const* jwin_extension_names;
     jwin_required_vk_extensions(&jwin_extension_count, &jwin_extension_names);
-    VkInstanceCreateInfo create_info =
+    const VkInstanceCreateInfo create_info =
             {
                     .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
                     .enabledExtensionCount = jwin_extension_count,

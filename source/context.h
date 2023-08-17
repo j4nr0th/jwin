@@ -50,10 +50,13 @@ JWIN_API xcb_connection_t* jwin_contex_native_xcb(jwin_context* ctx);
 JWIN_API Window jwin_contex_native_window_xlib(jwin_window* win);
 
 JWIN_API xcb_window_t jwin_contex_native_window_xcb(jwin_window* win);
-
-
 #else
-#error not implemented yet
+
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
+JWIN_API HWND jwin_contex_native_window_win32(jwin_window* win);
+
 #endif
 #endif
 #endif //JWIN_CONTEXT_H

@@ -9,9 +9,13 @@
 #   ifdef __GNUC__
 #       define ASSERTION_FAIL_COMMAND __builtin_trap()
 #   endif
+#	ifdef _WIN32
+#		define ASSERTION_FAIL_COMMAND __debugbreak()
+#	endif
 #else
 #   define ASSERTION_FAIL_COMMAND exit(EXIT_FAILURE)
 #endif
+
 
 #ifndef ASSERTION_FAIL_COMMAND
 #error  macro ASSERTION_FAIL_COMMAND was undefined

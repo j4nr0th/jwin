@@ -221,8 +221,12 @@ static size_t print_event_base(size_t buf_size, char* buffer, const jwin_event_a
     }
     return 0;
 }
+#ifndef _WIN32
+    #define PRINT_TO_BUFFER(fmt, ...) {chars_written += snprintf(buffer + chars_written, buf_size - chars_written, fmt __VA_OPT__(,) __VA_ARGS__); if (chars_written > buf_size) {chars_written = buf_size;}}(void)0
+#else
+    #define PRINT_TO_BUFFER(fmt, ...) {chars_written += snprintf(buffer + chars_written, buf_size - chars_written, fmt, __VA_ARGS__); if (chars_written > buf_size) {chars_written = buf_size;}}(void)0
+#endif
 
-#define PRINT_TO_BUFFER(fmt, ...) {chars_written += snprintf(buffer + chars_written, buf_size - chars_written, fmt __VA_OPT__(,) __VA_ARGS__); if (chars_written > buf_size) {chars_written = buf_size;}}(void)0
 
 static size_t print_mods(size_t buf_size, char* buffer, const jwin_mod_state_type mods)
 {

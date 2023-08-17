@@ -7,21 +7,26 @@
 //  This header includes common standard library headers needed by ALL and includes common typedefs
 
 #include <stdint.h>
-
 #if defined(_WIN32) || defined(__CYGWIN__)
-#define JWIN_INTERNAL_SYMBOL
-#define JWIN_EXPORT_SYMBOL __declspec(dllexport)
-#define JWIN_IMPORT_SYMBOL __declspec(dllimport)
+    #ifdef BUILDING_DLL
+        #define JWIN_INTERNAL_SYMBOL
+        #define JWIN_EXPORT_SYMBOL __declspec(dllexport)
+        #define JWIN_IMPORT_SYMBOL __declspec(dllimport)
+    #else
+        #define JWIN_INTERNAL_SYMBOL
+        #define JWIN_EXPORT_SYMBOL
+        #define JWIN_IMPORT_SYMBOL
+    #endif
 #else
-#if __GNUC__ >= 4
-#define JWIN_INTERNAL_SYMBOL __attribute__((visibility("hidden")))
-#define JWIN_EXPORT_SYMBOL __attribute__((visibility("default")))
-#define JWIN_IMPORT_SYMBOL __attribute__((visibility("default")))
-#else
-#define JWIN_INTERNAL_SYMBOL
-#define JWIN_EXPORT_SYMBOL
-#define JWIN_IMPORT_SYMBOL
-#endif
+    #if __GNUC__ >= 4
+        #define JWIN_INTERNAL_SYMBOL __attribute__((visibility("hidden")))
+        #define JWIN_EXPORT_SYMBOL __attribute__((visibility("default")))
+        #define JWIN_IMPORT_SYMBOL __attribute__((visibility("default")))
+    #else
+        #define JWIN_INTERNAL_SYMBOL
+        #define JWIN_EXPORT_SYMBOL
+        #define JWIN_IMPORT_SYMBOL
+    #endif
 #endif
 
 #ifdef JWIN_BUILD_LIBRARY

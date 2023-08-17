@@ -56,9 +56,10 @@ int main()
                     .width = 720,
                     .height = 480,
                     .fixed_size = 0,
-                    .double_click_time_ms = 1000,
             };
     JWIN_TEST_CALL(jwin_window_create(ctx, &win_info, &wnd));
+    ASSERT(res == JWIN_RESULT_SUCCESS);
+    JWIN_TEST_CALL(jwin_window_set_event_handler(wnd, JWIN_EVENT_TYPE_DESTROY, (jwin_event_callback) { .destroy = destroy_callback }, (void*)"Funi"));
     ASSERT(res == JWIN_RESULT_SUCCESS);
 
     jwin_context_set_event_hook(ctx, context_event_hook, NULL);
