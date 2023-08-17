@@ -18,7 +18,7 @@ struct jwin_context_T
     jwin_error_callbacks error_callbacks;
 
     HINSTANCE hinstance;
-    WNDCLASS window_class;
+    WNDCLASSW window_class;
     uint32_t window_count;
     uint32_t window_capacity;
     jwin_window** window_array;

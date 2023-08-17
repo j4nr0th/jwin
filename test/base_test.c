@@ -1,7 +1,10 @@
 //
 // Created by jan on 8.8.2023.
 //
+#include <locale.h>
 #include <stdio.h>
+#include <time.h>
+
 #include "../source/jwin.h"
 #include "test_common.h"
 
@@ -31,15 +34,16 @@ static void context_event_hook(const jwin_event_any* e, void* param)
     (void) param;
 }
 
-int main()
+int main(void)
 {
+    (void)setlocale(LC_ALL, "en_US.utf8");
     jwin_context* ctx;
     jwin_error_callbacks error_callbacks =
             {
                     .state = NULL,
                     .report = error_report_callback,
             };
-    jwin_context_create_info ctx_info =
+    const jwin_context_create_info ctx_info =
             {
                     .allocator_callbacks = NULL,
                     .error_callbacks = &error_callbacks,
@@ -49,7 +53,7 @@ int main()
     ASSERT(res == JWIN_RESULT_SUCCESS);
 
     jwin_window* wnd;
-    jwin_window_create_info win_info =
+    const jwin_window_create_info win_info =
             {
                     .title = "Cool window",
                     .visible = 1,

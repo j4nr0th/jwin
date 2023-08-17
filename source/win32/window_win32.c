@@ -33,9 +33,10 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
     AdjustWindowRect(&size, WS_OVERLAPPEDWINDOW, FALSE);
     int x = info.x != JWIN_POSITION_DONT_CARE ? info.x : 0;
     int y = info.y != JWIN_POSITION_DONT_CARE ? info.y : 0;
-    const HWND hwnd = CreateWindow(
+   
+	const HWND hwnd = CreateWindowW(
         ctx->window_class.lpszClassName,
-        info.title,
+        L"",
         WS_OVERLAPPEDWINDOW,
         x, y,
         size.right, size.bottom,
@@ -49,7 +50,7 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
         REPORT_ERROR(ctx, "Could not create Win32 window");
         return JWIN_RESULT_NO_WINDOW;
     }
-
+    SetWindowTextA(hwnd, info.title);
 
     //  Recheck window geometry
 

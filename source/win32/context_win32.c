@@ -45,15 +45,15 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
     ctx->error_callbacks = *info.error_callbacks;
 
     //  Register window class with WIN32
-    WNDCLASS wc =
+    WNDCLASSW wc =
     {
         .hInstance = hinst,
         .style = CS_DBLCLKS,
         .lpfnWndProc = INTERNAL_window_proc,
-        .lpszClassName = "jwin-window",
+        .lpszClassName = L"jwin-window",
     };
 
-    if (!RegisterClass(&wc))
+    if (!RegisterClassW(&wc))
     {
         res = JWIN_RESULT_NO_PLATFORM;
         REPORT_ERROR(ctx, "Could not open register windows window class display");
@@ -92,8 +92,8 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
                         { .key = JWIN_KEY_I, .keycode = 0x49 },
                         { .key = JWIN_KEY_O, .keycode = 0x4F },
                         { .key = JWIN_KEY_P, .keycode = 0x50},
-                        /*{ .key = JWIN_KEY_LBRACKET, .keycode = VK_0 }, TODO: these need to be added
-                        { .key = JWIN_KEY_RBRACKET, .keycode = VK_0 },*/
+                        { .key = JWIN_KEY_LBRACKET, .keycode = VK_OEM_4 },
+                        { .key = JWIN_KEY_RBRACKET, .keycode = VK_OEM_6 },
                         { .key = JWIN_KEY_A, .keycode = 0x41 },
                         { .key = JWIN_KEY_S, .keycode = 0x53 },
                         { .key = JWIN_KEY_D, .keycode = 0x44 },
@@ -103,9 +103,9 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
                         { .key = JWIN_KEY_J, .keycode = 0x5A },
                         { .key = JWIN_KEY_K, .keycode = 0x5B },
                         { .key = JWIN_KEY_L, .keycode = 0x4C },
-                        /*{ .key = JWIN_KEY_SEMICOL, .keycode = VK_0 }, TODO: these need to be added
-                        { .key = JWIN_KEY_APPOSTROPHE, .keycode = VK_0 },
-                        { .key = JWIN_KEY_BACKSLASH, .keycode = VK_0 },*/
+                        { .key = JWIN_KEY_SEMICOL, .keycode = 0xBA },
+                        { .key = JWIN_KEY_APPOSTROPHE, .keycode = VK_OEM_7 },
+                        { .key = JWIN_KEY_BACKSLASH, .keycode = VK_OEM_5 },
                         { .key = JWIN_KEY_Z, .keycode = 0x5A },
                         { .key = JWIN_KEY_X, .keycode = 0x58 },
                         { .key = JWIN_KEY_C, .keycode = 0x43 },
@@ -113,10 +113,10 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
                         { .key = JWIN_KEY_B, .keycode = 0x42 },
                         { .key = JWIN_KEY_N, .keycode = 0x4E },
                         { .key = JWIN_KEY_M, .keycode = 0x4D },
-                        /*{ .key = JWIN_KEY_COMMA, .keycode = VK_0 },   TODO: these need to be added
-                        { .key = JWIN_KEY_PERIOD, .keycode = VK_0 },
-                        { .key = JWIN_KEY_SLASH, .keycode = VK_0 },
-                        { .key = JWIN_KEY_GRAVE, .keycode = VK_0 },*/
+                        { .key = JWIN_KEY_COMMA, .keycode = 0xBC },
+                        { .key = JWIN_KEY_PERIOD, .keycode = 0xBE },
+                        { .key = JWIN_KEY_SLASH, .keycode = 0xBD },
+                        { .key = JWIN_KEY_GRAVE, .keycode = 0xC0 },
                         { .key = JWIN_KEY_1, .keycode = 0x31 },
                         { .key = JWIN_KEY_2, .keycode = 0x32 },
                         { .key = JWIN_KEY_3, .keycode = 0x33 },
@@ -127,8 +127,8 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
                         { .key = JWIN_KEY_8, .keycode = 0x38 },
                         { .key = JWIN_KEY_9, .keycode = 0x39 },
                         { .key = JWIN_KEY_0, .keycode = 0x30 },
-                        /*{ .key = JWIN_KEY_MINUS, .keycode = VK_0 },   TODO: these need to be added
-                        { .key = JWIN_KEY_EQUAL, .keycode = VK_0 },*/
+                        { .key = JWIN_KEY_MINUS, .keycode = 0xBF },
+                        { .key = JWIN_KEY_EQUAL, .keycode = 0xBB },
                         { .key = JWIN_KEY_BACKSPACE, .keycode = VK_BACK },
                         { .key = JWIN_KEY_TAB, .keycode = VK_TAB },
                         { .key = JWIN_KEY_CAPSLOCK, .keycode = VK_CAPITAL },
@@ -136,7 +136,7 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
                         { .key = JWIN_KEY_RSHIFT, .keycode = VK_RSHIFT },
                         { .key = JWIN_KEY_LCTRL, .keycode = VK_CONTROL },
                         { .key = JWIN_KEY_RCTRL, .keycode = VK_RCONTROL },
-                        //{ .key = JWIN_KEY_MENU, .keycode = VK_ }, TODO: this needs to be added
+                        { .key = JWIN_KEY_MENU, .keycode = 0x5D },
                         { .key = JWIN_KEY_RSUPER, .keycode = VK_LWIN },
                         { .key = JWIN_KEY_LSUPER, .keycode = VK_RWIN },
                         { .key = JWIN_KEY_LALT, .keycode = VK_MENU },
@@ -167,7 +167,7 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
                         { .key = JWIN_KEY_NUM_MUL, .keycode = VK_MULTIPLY },
                         { .key = JWIN_KEY_NUM_SUB, .keycode = VK_SUBTRACT },
                         { .key = JWIN_KEY_NUM_ADD, .keycode = VK_ADD },
-                        /*{ .key = JWIN_KEY_NUM_ENTER, .keycode = VK_0 },*/ //TODO: this needs to be added
+                        { .key = JWIN_KEY_NUM_ENTER, .keycode = 0x0D },
                         { .key = JWIN_KEY_F1, .keycode = VK_F1 },
                         { .key = JWIN_KEY_F2, .keycode = VK_F2 },
                         { .key = JWIN_KEY_F3, .keycode = VK_F3 },
@@ -214,7 +214,7 @@ jwin_result jwin_context_create(const jwin_context_create_info* create_info, jwi
 
 void jwin_context_destroy(jwin_context* ctx)
 {
-    UnregisterClass(ctx->window_class.lpszClassName, ctx->hinstance);
+    UnregisterClassW(ctx->window_class.lpszClassName, ctx->hinstance);
     ctx->allocator_callbacks.free(ctx->allocator_callbacks.state, ctx->window_array);
     ctx->allocator_callbacks.free(ctx->allocator_callbacks.state, ctx);
 }
@@ -408,12 +408,12 @@ static inline jwin_keycode win32_keycode_to_jwin_keycode(const jwin_context* ctx
 static inline jwin_mod_state_type win32_mods_to_jwin_mods(jwin_context* ctx)
 {
     jwin_mod_state_type mods =
-            (GetKeyState(VK_SHIFT) ? JWIN_MOD_STATE_TYPE_SHIFT : 0) |
-            (GetKeyState(VK_CONTROL) ? JWIN_MOD_STATE_TYPE_CTRL : 0) |
-            (GetKeyState(VK_MENU) ? JWIN_MOD_STATE_TYPE_ALT : 0) |
-            (GetKeyState(VK_LWIN) ? JWIN_MOD_STATE_TYPE_SUPER : 0) |
-            (GetKeyState(VK_CAPITAL) ? JWIN_MOD_STATE_TYPE_CAPSLOCK : 0) |
-            (GetKeyState(VK_NUMLOCK) ? JWIN_MOD_STATE_TYPE_NUMLOCK : 0);
+            (((GetKeyState(VK_LSHIFT) & 0x8000) || (GetKeyState(VK_RSHIFT) & 0x8000))  ? JWIN_MOD_STATE_TYPE_SHIFT : 0) |
+            ((GetKeyState(VK_LCONTROL) & 0x8000) || (GetKeyState(VK_RCONTROL) & 0x8000) ? JWIN_MOD_STATE_TYPE_CTRL : 0) |
+            ((GetKeyState(VK_LMENU) & 0x8000) || (GetKeyState(VK_RMENU) & 0x8000) ? JWIN_MOD_STATE_TYPE_ALT : 0) |
+            ((GetKeyState(VK_LWIN) & 0x8000) || (GetKeyState(VK_RWIN) & 0x8000) ? JWIN_MOD_STATE_TYPE_SUPER : 0) |
+            ((GetKeyState(VK_CAPITAL) & 1) ? JWIN_MOD_STATE_TYPE_CAPSLOCK : 0) |
+            ((GetKeyState(VK_NUMLOCK) & 1) ? JWIN_MOD_STATE_TYPE_NUMLOCK : 0);
     return mods;
 }
 
@@ -453,6 +453,7 @@ LRESULT CALLBACK INTERNAL_window_proc(HWND wnd, UINT type, WPARAM wparam, LPARAM
                 .mods = mods,
                 .repeated = repeated,
         };
+        printf("Actual key code: %04hx\n", (unsigned short)(wparam & 0xFFFF));
         CALL_EVENT_HOOKS(win, (jwin_event_any) { .key_press = ev });
         if (kp_callback)
         {
@@ -950,7 +951,7 @@ LRESULT CALLBACK INTERNAL_window_proc(HWND wnd, UINT type, WPARAM wparam, LPARAM
                 refresh(&e, win->event_handlers[JWIN_EVENT_TYPE_REFRESH].param);
             }
             RECT r;
-            GetWindowRect(wnd, &r);
+            GetClientRect(wnd, &r);
             ValidateRect(wnd, &r);
         }
         return 0;
@@ -1045,7 +1046,7 @@ LRESULT CALLBACK INTERNAL_window_proc(HWND wnd, UINT type, WPARAM wparam, LPARAM
             ctx->allocator_callbacks.free(ctx->allocator_callbacks.state, e);
         }
 
-    default: return DefWindowProc(wnd, type, wparam, lparam);
+    default: return DefWindowProcW(wnd, type, wparam, lparam);
     }
 }
 

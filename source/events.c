@@ -348,7 +348,7 @@ size_t jwin_event_to_str(size_t buf_size, char* buffer, const jwin_event_any* ev
     case JWIN_EVENT_TYPE_KEY_CHARACTER:
     {
         const jwin_event_key_char* e = &event->key_char;
-        PRINT_TO_BUFFER("\t.utf8 = \"%s\",\n", e->utf8);
+    	PRINT_TO_BUFFER("\t.utf8 = \"%s\",\n", e->utf8);
     }
         break;
 
