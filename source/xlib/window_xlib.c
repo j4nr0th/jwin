@@ -40,9 +40,9 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
     {
         info.title = "jwin-program";
     }
-    if (info.double_click_time_ms == 0)
+    if (info.xorg.double_click_time_ms == 0)
     {
-        info.double_click_time_ms = 250;
+        info.xorg.double_click_time_ms = 250;
     }
 
     XSetWindowAttributes wa =
@@ -181,7 +181,7 @@ jwin_result jwin_window_create(jwin_context* ctx, const jwin_window_create_info*
     memset(this->button_press_times, 0, sizeof(this->button_press_times));
     this->ic = ic;
     this->parent_hwnd = ctx->root;
-    this->double_click_time = info.double_click_time_ms;
+    this->double_click_time = info.xorg.double_click_time_ms;
 
     this->event_hook = NULL;
     this->event_param = NULL;

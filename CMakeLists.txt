@@ -45,9 +45,9 @@ add_library(jwin
 )
 
 
+target_link_libraries(jwin PRIVATE "${Vulkan_LIBRARY}")
+target_include_directories(jwin PRIVATE "${Vulkan_INCLUDE_DIR}")
 if (WIN32)
-   target_link_libraries(jwin PRIVATE "${Vulkan_LIBRARY}")
-   target_include_directories(jwin PRIVATE "${Vulkan_INCLUDE_DIR}")
    if (BUILD_SHARED_LIBS)
     target_compile_definitions(jwin PRIVATE BUILDING_DLL)
    endif ()
