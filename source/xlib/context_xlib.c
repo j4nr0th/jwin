@@ -625,7 +625,7 @@ jwin_result jwin_context_handle_events(jwin_context* ctx)
         XEvent e;
         XNextEvent(ctx->dpy, &e);
         //  Find what window it came from
-
+        if (!e.xany.window) continue;
         jwin_window* window = INTERNAL_find_window_from_xlib_handle(ctx, e.xany.window);
         if (!window || window->hwnd != e.xany.window)
         {
